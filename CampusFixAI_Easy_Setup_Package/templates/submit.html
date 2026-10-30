@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block title %}Report an issue{% endblock %}{% block content %}<section class="page-heading"><div class="eyebrow">NEW CAMPUS REPORT</div><h1>Tell us what needs fixing.</h1><p>Your browser will ask for camera and location permissions. GPS must be within the campus radius configured by the administrator.</p></section><section class="form-card"><form method="post" enctype="multipart/form-data" id="complaintForm"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><div class="form-grid"><label class="span-2">Building / block / room<input name="location" maxlength="160" placeholder="e.g. Block B, Room 203" required></label><label class="span-2">Describe the issue<textarea name="description" maxlength="2000" rows="4" placeholder="What happened, where, and how long has it been happening?" required></textarea></label></div><div class="camera-panel">
+<div><h3>Live photo evidence <span class="required">*</span></h3>
+<p id="cameraStatus" class="muted" role="status">Click “Open camera” to allow camera access. If it is blocked, choose a photo from your device.</p></div>
+<div class="camera-actions">
+<button type="button" class="btn secondary" id="startCamera">Open camera / Retry</button>
+<button type="button" class="btn primary" id="capturePhoto" disabled>Capture photo</button>
+</div>
+<video id="camera" autoplay playsinline muted hidden></video>
+<canvas id="canvas" hidden></canvas>
+<img id="preview" alt="Captured problem preview" hidden>
+<input type="hidden" name="photo_data" id="photoData">
+<label>Or choose a photo<input type="file" name="photo_file" id="photoFile" accept="image/*" capture="environment"></label>
+<p class="tiny muted">Camera and GPS work on localhost on this computer, or on a deployed HTTPS website. They are blocked on most ordinary HTTP network links.</p>
+</div><div class="gps-panel"><div><h3>Campus GPS verification</h3><p id="gpsStatus" class="muted">Location has not been checked yet.</p></div><button type="button" class="btn secondary" id="getLocation">Verify my location</button><input type="hidden" name="latitude" id="latitude"><input type="hidden" name="longitude" id="longitude"></div><button class="btn primary full" type="submit">Submit complaint</button><p class="tiny muted">Your location is used to check the campus boundary. Do not submit sensitive personal information in the description.</p></form></section>{% endblock %}{% block scripts %}<script src="{{ url_for('static', filename='submit.js') }}"></script>{% endblock %}
